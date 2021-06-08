@@ -1,0 +1,16 @@
+#My Bot
+line.bot:
+  channel-token: 'saJhUO/ZHrYhpeJiAMse9VBvXxVEYb0sD3NtiQnc7/fxsAfaA+KGg3bxA/mnViBlfFlhtMkykMYICHljhng0VOc/2Gf4mOPfCRefZlDJs0aIT1eYiaw7Shdb/984fgpOYosay3LufTg20+v+KbOXEQdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'ba9ef28230eb4aacf6b0190fc634cd53'
+  handler.path: /callback
+
+#line.bot:
+#  channel-token: '+uX0nakumxSqvh9uFcpocL/Qd+2Fhp7vMPFz4yX+etpB+payBVT370cnb0oimxtqKpgL1nwE6KWSngs+OuQuZfG7HWdfBavUS+NlJOZCmwVfKoEGQR34OmdvcJs1/HT4KnrOgaaHjcGQfrluThwR0QdB04t89/1O/w1cDnyilFU='
+#  channel-secret: '65ca81e380d28ced2c53981dfca44c91'
+#  handler.path: /callback
+
+#My Bot Test
+#line.bot:
+#  channel-token: 'B2JgHSPwN+lwsgts6GW7kgqQ0ZJLLUjBZrGjghDBXgkOr+F9aFsclwUZR1M4ww252r2iWaebIwjS45tBJwTLz8YUmOXjCmVI1CUF3mCgk5LhCuIppdw3RtTpLlzASiz4Bacs/Pns1aRyD649IPBFZgdB04t89/1O/w1cDnyilFU='
+#  channel-secret: '872b52ed9ad2dca779b3380c5ce6b5ab'
+#  handler.path: /callback
