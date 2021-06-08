@@ -886,9 +886,9 @@ public class LineBotController {
             throw new IllegalArgumentException("replyToken is not empty");
         }
 
-        if(message.length() > 1000) {
-            message = message.substring(0, 1000 - 2) + "...";
-        }
+//        if(message.length() > 1000) {
+//            message = message.substring(0, 1000 - 2) + "...";
+//        }
         this.reply(replyToken, new TextMessage(message));
     }
 
