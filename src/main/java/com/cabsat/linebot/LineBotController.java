@@ -42,6 +42,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -321,6 +322,7 @@ public class LineBotController {
     }
 
     public List<OrderSummaryModel> convertToOrderSummaryModel(List<OrderSummaryResponse> orderSummaryResponseList) throws CustomException {
+        DecimalFormat formatter = new DecimalFormat("#,###");
         List<OrderSummaryModel> orderSummaryModelList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(orderSummaryResponseList)){
             List<OrderSummary> orderSummaryList = new ArrayList<>();
@@ -356,10 +358,10 @@ public class LineBotController {
                         String text = map.getKey()+"="+map.getValue();
                         codSummary.setText(text);
                         codSummaryList.add(codSummary);
-                        codCount++;
+                        codCount += map.getValue();
                         String key = map.getKey();
                         String[] keys = key.split("/");
-                        codCountPrice += Integer.parseInt(keys[0]);
+                        codCountPrice += Integer.parseInt(keys[0]) * map.getValue();
                         productSummaryVal += Integer.parseInt(keys[1]);
                     }
                     for(Map.Entry<String, Integer> map:mapTransferSummary.entrySet()){
@@ -367,23 +369,23 @@ public class LineBotController {
                         String text = map.getKey()+"="+map.getValue();
                         transferSummary.setText(text);
                         transferSummaryList.add(transferSummary);
-                        transferCount++;
+                        transferCount += map.getValue();
                         String key = map.getKey();
                         String[] keys = key.split("/");
-                        transferCountPrice += Integer.parseInt(keys[0]);
+                        transferCountPrice += Integer.parseInt(keys[0]) * map.getValue();
                         productSummaryVal += Integer.parseInt(keys[1]);
                     }
                     int orderSummaryVal = transferCount+codCount;
                     int totalSales = transferCountPrice+codCountPrice;
                     orderSummary.setTransferCount(transferCount+"");
-                    orderSummary.setTransferCountPrice(transferCountPrice+"");
+                    orderSummary.setTransferCountPrice(formatter.format(transferCountPrice));
                     orderSummary.setCodCount(codCount+"");
-                    orderSummary.setCodCountPrice(codCountPrice+"");
+                    orderSummary.setCodCountPrice(formatter.format(codCountPrice));
                     orderSummary.setOrderSummary(orderSummaryVal+"");
                     orderSummary.setProductSummary(productSummaryVal+"");
                     orderSummary.setTransferSummaryList(transferSummaryList);
                     orderSummary.setCodSummaryList(codSummaryList);
-                    orderSummary.setTotalSales(totalSales+"");
+                    orderSummary.setTotalSales(formatter.format(totalSales));
                     orderSummaryList.add(orderSummary);
                     summaryTotalSales += totalSales;
                     mapTransferSummary = new HashMap<>();
@@ -429,10 +431,10 @@ public class LineBotController {
                         String text = map.getKey()+"="+map.getValue();
                         codSummary.setText(text);
                         codSummaryList.add(codSummary);
-                        codCount++;
+                        codCount += map.getValue();
                         String key = map.getKey();
                         String[] keys = key.split("/");
-                        codCountPrice += Integer.parseInt(keys[0]);
+                        codCountPrice += Integer.parseInt(keys[0]) * map.getValue();
                         productSummaryVal += Integer.parseInt(keys[1]);
                     }
                     for(Map.Entry<String, Integer> map:mapTransferSummary.entrySet()){
@@ -440,28 +442,28 @@ public class LineBotController {
                         String text = map.getKey()+"="+map.getValue();
                         transferSummary.setText(text);
                         transferSummaryList.add(transferSummary);
-                        transferCount++;
+                        transferCount += map.getValue();
                         String key = map.getKey();
                         String[] keys = key.split("/");
-                        transferCountPrice += Integer.parseInt(keys[0]);
+                        transferCountPrice += Integer.parseInt(keys[0]) * map.getValue();
                         productSummaryVal += Integer.parseInt(keys[1]);
                     }
                     int orderSummaryVal = transferCount+codCount;
                     int totalSales = transferCountPrice+codCountPrice;
                     orderSummary.setTransferCount(transferCount+"");
-                    orderSummary.setTransferCountPrice(transferCountPrice+"");
+                    orderSummary.setTransferCountPrice(formatter.format(transferCountPrice));
                     orderSummary.setCodCount(codCount+"");
-                    orderSummary.setCodCountPrice(codCountPrice+"");
+                    orderSummary.setCodCountPrice(formatter.format(codCountPrice));
                     orderSummary.setOrderSummary(orderSummaryVal+"");
                     orderSummary.setProductSummary(productSummaryVal+"");
                     orderSummary.setTransferSummaryList(transferSummaryList);
                     orderSummary.setCodSummaryList(codSummaryList);
-                    orderSummary.setTotalSales(totalSales+"");
+                    orderSummary.setTotalSales(formatter.format(totalSales));
                     orderSummaryList.add(orderSummary);
                     summaryTotalSales += totalSales;
                     orderSummaryModel.setDate(orderSummaryResponse.getCreateDate());
                     orderSummaryModel.setOrderSummaryList(orderSummaryList);
-                    orderSummaryModel.setSummaryTotalSales(summaryTotalSales+"");
+                    orderSummaryModel.setSummaryTotalSales(formatter.format(summaryTotalSales));
                     orderSummaryModelList.add(orderSummaryModel);
                 }
                 i++;
