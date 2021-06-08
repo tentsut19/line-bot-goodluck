@@ -362,7 +362,7 @@ public class LineBotController {
                         String key = map.getKey();
                         String[] keys = key.split("/");
                         codCountPrice += Integer.parseInt(keys[0]) * map.getValue();
-                        productSummaryVal += Integer.parseInt(keys[1]);
+                        productSummaryVal += Integer.parseInt(keys[1]) * map.getValue();
                     }
                     for(Map.Entry<String, Integer> map:mapTransferSummary.entrySet()){
                         TransferSummary transferSummary = new TransferSummary();
@@ -373,7 +373,7 @@ public class LineBotController {
                         String key = map.getKey();
                         String[] keys = key.split("/");
                         transferCountPrice += Integer.parseInt(keys[0]) * map.getValue();
-                        productSummaryVal += Integer.parseInt(keys[1]);
+                        productSummaryVal += Integer.parseInt(keys[1]) * map.getValue();
                     }
                     int orderSummaryVal = transferCount+codCount;
                     int totalSales = transferCountPrice+codCountPrice;
@@ -435,7 +435,7 @@ public class LineBotController {
                         String key = map.getKey();
                         String[] keys = key.split("/");
                         codCountPrice += Integer.parseInt(keys[0]) * map.getValue();
-                        productSummaryVal += Integer.parseInt(keys[1]);
+                        productSummaryVal += Integer.parseInt(keys[1]) * map.getValue();
                     }
                     for(Map.Entry<String, Integer> map:mapTransferSummary.entrySet()){
                         TransferSummary transferSummary = new TransferSummary();
@@ -446,7 +446,7 @@ public class LineBotController {
                         String key = map.getKey();
                         String[] keys = key.split("/");
                         transferCountPrice += Integer.parseInt(keys[0]) * map.getValue();
-                        productSummaryVal += Integer.parseInt(keys[1]);
+                        productSummaryVal += Integer.parseInt(keys[1]) * map.getValue();
                     }
                     int orderSummaryVal = transferCount+codCount;
                     int totalSales = transferCountPrice+codCountPrice;
