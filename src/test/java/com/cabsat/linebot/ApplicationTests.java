@@ -271,4 +271,21 @@ class ApplicationTests {
 		}
 	}
 
+	@Test
+	public void test_12345(){
+		String input = "รองเท้าSupดำ,รองเท้าSup38เขียว,รองเท้าSup38ขาว,รองเท้าSup39ขาว";
+//		String input = "รองเท้า";
+		String regex = "\\d+.";
+		String[] ss = input.split(regex);
+		if(ss.length > 0){
+			input = ss[0];
+			System.out.println(ss[0]);
+		}
+		regex = "\\,+.";
+		ss = input.split(regex);
+		if(ss.length > 0){
+			System.out.println(ss[0]);
+		}
+	}
+
 }

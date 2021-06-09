@@ -342,6 +342,11 @@ public class LineBotController {
                 if(productNames.length > 0){
                     productName = productNames[0];
                 }
+                regex = "\\,+.";
+                productNames = productName.split(regex);
+                if(productNames.length > 0){
+                    productName = productNames[0];
+                }
                 String[] productDraftNames = orderSummaryResponse.getProductDraftName().split(regex);
                 if(productDraftNames.length > 0){
                     productDraftName = productDraftNames[0];
@@ -396,6 +401,11 @@ public class LineBotController {
                     productName = orderSummaryResponse.getProductDraftName();
                     productNames = productName.split(regex);
                     if (productNames.length > 0) {
+                        productName = productNames[0];
+                    }
+                    regex = "\\,+.";
+                    productNames = productName.split(regex);
+                    if(productNames.length > 0){
                         productName = productNames[0];
                     }
                 }
