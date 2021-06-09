@@ -889,7 +889,7 @@ public class LineBotController {
         }
 
         if(message.length() > 5000) {
-            message = message.substring(0, 5000 - 2) + "...";
+            message = message.substring(0, 5000 - 2) + "..";
         }
         this.reply(replyToken, new TextMessage(message));
     }
