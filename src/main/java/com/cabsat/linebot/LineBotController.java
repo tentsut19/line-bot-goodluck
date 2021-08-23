@@ -647,6 +647,7 @@ public class LineBotController {
     public void customerNameOrOrderCode(String text, CustomerRequest customerRequest) throws CustomException {
         String regex = "\\d+.";
         String[] customerNameOrOrderCode = text.trim().split("-");
+        customerRequest.setRecipientName(text);
         if(customerNameOrOrderCode.length == 1){
             customerRequest.setName(customerNameOrOrderCode[0].replaceAll(regex,"").trim());
         }else if(customerNameOrOrderCode.length == 2){

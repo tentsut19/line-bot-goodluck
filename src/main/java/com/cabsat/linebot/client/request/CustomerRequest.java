@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomerRequest {
+    @JsonProperty("recipient_name")
+    private String recipientName;
     @JsonProperty("line_user_id")
     private String lineUserId;
     @JsonProperty("display_name")
