@@ -251,6 +251,7 @@ public class LineBotController {
                     "\n"+e.getMessage());
         }catch (Exception e){
             e.printStackTrace();
+            this.replyText(replyToken, "เกิดข้อผิดพลาด");
         }
     }
 
@@ -646,6 +647,11 @@ public class LineBotController {
 
     public void customerNameOrOrderCode(String text, CustomerRequest customerRequest) throws CustomException {
         String regex = "\\d+.";
+        String[] conditions = text.trim().split("\\+");
+        if(conditions.length > 1){
+            customerRequest.setCondition(conditions[0]);
+            text = conditions[1];
+        }
         String[] customerNameOrOrderCode = text.trim().split("-");
         customerRequest.setRecipientName(text);
         if(customerNameOrOrderCode.length == 1){

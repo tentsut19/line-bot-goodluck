@@ -27,6 +27,8 @@ public class CustomerRequest {
     private String no;
     @JsonProperty("order_code")
     private String orderCode;
+    @JsonProperty("condition")
+    private String condition;
     @JsonProperty("name")
     private String name;
     @JsonProperty("address")

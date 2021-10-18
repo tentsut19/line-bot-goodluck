@@ -14,7 +14,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class ScheduledService {
 
-    @Scheduled(cron = "0 0/30 * ? * *")
+//    @Scheduled(cron = "0 0/30 * ? * *")
     public void startService() throws Exception {
         log.info("Scheduled Started at {}",new Date());
     }
