@@ -23,6 +23,7 @@ import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.StickerMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.Source;
 import com.linecorp.bot.model.message.*;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
@@ -110,9 +111,11 @@ public class LineBotController {
     @EventMapping
     public void handleTextMessage(MessageEvent<TextMessageContent> event) throws Exception {
         String userId = event.getSource().getUserId();
+        String senderId = event.getSource().getSenderId();
         log.info(">>>>>>>>>>>>>>>>>>>");
+        log.info("event : {}",event);
         log.info("userId : {}",userId);
-        log.info(event.toString());
+        log.info("senderId : {}",senderId);
 
         TextMessageContent message = event.getMessage();
         handleText(event.getReplyToken(), event, message);
@@ -680,7 +683,22 @@ public class LineBotController {
             if(phoneNumber.length() < 10){
                 throw new CustomException(INVALID_REQUEST,"เบอร์โทร : "+phoneNumber+" ไม่ครบ 10 หลัก");
             }
+            if(!isNumeric(phoneNumber)){
+                throw new CustomException(INVALID_REQUEST,"เบอร์โทร : ["+phoneNumber+"] ไม่ถูกต้อง");
+            }
         }
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     public void customerSocialName(String text, CustomerRequest customerRequest) {

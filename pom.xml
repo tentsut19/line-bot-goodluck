@@ -23,10 +23,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.linecorp.bot</groupId>-->
+<!--            <artifactId>line-bot-spring-boot</artifactId>-->
+<!--            <version>1.20.0</version>-->
+<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/com.linecorp.bot/line-bot-spring-boot -->
+        <dependency>
             <groupId>com.linecorp.bot</groupId>
             <artifactId>line-bot-spring-boot</artifactId>
-            <version>1.20.0</version>
+            <version>4.6.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
