@@ -680,6 +680,7 @@ public class LineBotController {
     public void validatePhoneNumber(String text) throws CustomException {
         String[] phoneNumbers = text.trim().split("-");
         for(String phoneNumber:phoneNumbers){
+            phoneNumber = phoneNumber.replaceAll("\u200B", "");
             if(phoneNumber.length() < 10){
                 throw new CustomException(INVALID_REQUEST,"เบอร์โทร : "+phoneNumber+" ไม่ครบ 10 หลัก");
             }

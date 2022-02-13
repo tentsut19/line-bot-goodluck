@@ -216,15 +216,16 @@ class ApplicationTests {
 				"รองเท้าเข็มขัดชมพู 1 ชมพู 40\n" +
 				"รองเท้าเข็มขัดครีม 2 ครีม 38";
 
-		String textError = "18307.โศรดา ฟ้ากระจ่าง\n" +
-				"327ม.1ต.บางแก้ว อ.บางพลี\n" +
-				"จ.สมุทรปราการ 10540 0619730891\n" +
-				"F. โซรดา ฟ้ากระจ่าง \n" +
+		String textError = "จรินทร์\u200B อาจ\u200Bวิถี\u200B \n" +
+				"9\u200Bหมู่\u200B10\u200Bต\u200B วัง\u200Bเย็น\u200B อ\u200Bบางแพ\u200B จ\u200Bราชบุรี\u200B 70160\u200B\n" +
+				"085\u200B1915592\n" +
+				"F. Jarin Artwiti\n" +
 				"Cod-258\n" +
-				"แตะเกาหลี35ดำ 1";
+				"แตะเกาหลี39ครีม 1";
 
+//		emailBodyStr = emailBodyStr.replaceAll("\u200B", "");
 
-		CustomerRequest customerRequest = lineBotController.createCustomerRequest_v1(textEdit);
+		CustomerRequest customerRequest = lineBotController.createCustomerRequest_v1(textError);
 		System.out.println(customerRequest);
 	}
 
