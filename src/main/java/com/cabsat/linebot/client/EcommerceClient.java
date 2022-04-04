@@ -23,8 +23,8 @@ public class EcommerceClient {
     @Autowired
     private RestTemplate restTemplate;
 
-//    final String HOST_NAME = "http://ecommerce-uat.ap-southeast-1.elasticbeanstalk.com";
-    final String HOST_NAME = "http://localhost:8000";
+    final String HOST_NAME = "http://ecommerce-uat.ap-southeast-1.elasticbeanstalk.com";
+//    final String HOST_NAME = "http://localhost:8000";
     final String CREATE_ORDER_ENDPOINT = "/api/v1/order/customer";
     final String CREATE_SUMMARY_ENDPOINT = "/api/v1/order-summary/summary-line";
     final String DELETE_ORDER_ENDPOINT = "/api/v1/order/delete/{orderCode}";
