@@ -22,6 +22,7 @@ public class LineDataClient {
     final String LINE_DATA_ENDPOINT = "/v2/bot/message/{messageId}/content";
     final String LINE_GET_PROFILE_ENDPOINT = "https://api.line.me/v2/bot/profile/{userId}";
     final String LINE_GET_PROFILE_GROUP_ENDPOINT = "https://api.line.me/v2/bot/group/{groupId}/member/{userId}";
+    final String LINE_GET_GROUP_CHAT_SUMMARY_ENDPOINT = "https://api.line.me/v2/bot/group/{groupId}/summary";
 
     public byte[] getContent(String messageId) {
         String lineEndpoint = LINE_DATA_ENDPOINT.replace("{messageId}", messageId);
@@ -42,6 +43,27 @@ public class LineDataClient {
                 }
         );
 //        log.info("Response Line API., http body : {}", response.getBody());
+        log.info("End Line API., http status : {}", response.getStatusCodeValue());
+        return response.getBody();
+    }
+
+    public LineProfileResponse getGroupChatSummaryEndpoint(String groupId) {
+        String endpoint = LINE_GET_GROUP_CHAT_SUMMARY_ENDPOINT.replace("{groupId}", groupId);
+        log.info(
+                "Start client for Line API. {} groupId {}",
+                endpoint,groupId
+        );
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer "+lineBotChannelToken);
+        HttpEntity httpRequest = new HttpEntity<>(headers);
+        ResponseEntity<LineProfileResponse> response = restTemplate.exchange(
+                endpoint,
+                HttpMethod.GET,
+                httpRequest,
+                new ParameterizedTypeReference<LineProfileResponse>() {
+                }
+        );
         log.info("End Line API., http status : {}", response.getStatusCodeValue());
         return response.getBody();
     }

@@ -43,4 +43,6 @@ public class CustomerRequest {
     private String price;
     @JsonProperty("orders")
     private List<OrderRequest> orderList;
+    @JsonProperty("group_id")
+    private String groupId;
 }

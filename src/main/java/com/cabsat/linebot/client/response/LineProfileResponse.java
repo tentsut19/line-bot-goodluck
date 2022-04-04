@@ -17,4 +17,8 @@ public class LineProfileResponse {
     private String statusMessage;
     @JsonProperty("language")
     private String language;
+    @JsonProperty("groupId")
+    private String groupId;
+    @JsonProperty("groupName")
+    private String groupName;
 }

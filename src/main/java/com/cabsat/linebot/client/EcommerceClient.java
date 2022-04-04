@@ -2,10 +2,8 @@ package com.cabsat.linebot.client;
 
 import com.cabsat.linebot.client.request.CustomerRequest;
 import com.cabsat.linebot.client.request.OrderSummaryRequest;
-import com.cabsat.linebot.client.response.CustomerResponse;
-import com.cabsat.linebot.client.response.FileManagerResponse;
-import com.cabsat.linebot.client.response.OrderSummaryResponse;
-import com.cabsat.linebot.client.response.ProductSettingResponse;
+import com.cabsat.linebot.client.request.RegisterLineGroupRequest;
+import com.cabsat.linebot.client.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,12 +23,15 @@ public class EcommerceClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    final String HOST_NAME = "http://ecommerce-uat.ap-southeast-1.elasticbeanstalk.com";
-//    final String HOST_NAME = "http://localhost:8000";
+//    final String HOST_NAME = "http://ecommerce-uat.ap-southeast-1.elasticbeanstalk.com";
+    final String HOST_NAME = "http://localhost:8000";
     final String CREATE_ORDER_ENDPOINT = "/api/v1/order/customer";
     final String CREATE_SUMMARY_ENDPOINT = "/api/v1/order-summary/summary-line";
     final String DELETE_ORDER_ENDPOINT = "/api/v1/order/delete/{orderCode}";
     final String GET_PRODUCT_SETTING_ENDPOINT = "/api/v1/product-setting";
+    final String GET_PRODUCT_SETTING_GROUP_ENDPOINT = "/api/v1/product-setting/group/{groupId}";
+    final String GET_COMPANY_BY_TAX_ID_ENDPOINT = "/api/v1/company/tax-id/{taxId}";
+    final String GET_REGISTER_BY_TAX_ID_ENDPOINT = "/api/v1/register/tax-id/{taxId}";
     final String UPLOAD_ENDPOINT = "/api/v1/upload";
 
     public ResponseEntity<CustomerResponse> createOrderCustomer(CustomerRequest request) {
@@ -119,6 +120,27 @@ public class EcommerceClient {
         return response;
     }
 
+    public ResponseEntity<List<ProductSettingResponse>> getProductSetting(String groupId) {
+        String endpoint = HOST_NAME + GET_PRODUCT_SETTING_GROUP_ENDPOINT.replace("{groupId}", groupId);
+        log.info(
+                "Start client for API. {}",
+                endpoint
+        );
+        HttpHeaders requestHeader = new HttpHeaders();
+        requestHeader.set("user_id", "");
+        HttpEntity<CustomerRequest> httpEntity = new HttpEntity<>(requestHeader);
+        ResponseEntity<List<ProductSettingResponse>> response = restTemplate.exchange(
+                endpoint,
+                HttpMethod.GET,
+                httpEntity,
+                new ParameterizedTypeReference<List<ProductSettingResponse>>() {
+                }
+        );
+        log.info("Response API., http body : {}", response.getBody());
+        log.info("End API., http status : {}", response.getStatusCodeValue());
+        return response;
+    }
+
     public ResponseEntity<FileManagerResponse> uploadImage(byte[] bytes, String originalFilename, String type) {
         String endpoint = HOST_NAME + UPLOAD_ENDPOINT;
         log.info(
@@ -160,4 +182,46 @@ public class EcommerceClient {
         return response;
     }
 
+    public ResponseEntity<CompanyResponse> getCompanyByTaxId(String taxId) {
+        String endpoint = HOST_NAME + GET_COMPANY_BY_TAX_ID_ENDPOINT.replace("{taxId}", taxId);
+        log.info(
+                "Start client for API. {}",
+                endpoint
+        );
+        HttpHeaders requestHeader = new HttpHeaders();
+        requestHeader.set("user_id", "");
+        HttpEntity<CustomerRequest> httpEntity = new HttpEntity<>(requestHeader);
+        ResponseEntity<CompanyResponse> response = restTemplate.exchange(
+                endpoint,
+                HttpMethod.GET,
+                httpEntity,
+                new ParameterizedTypeReference<CompanyResponse>() {
+                }
+        );
+        log.info("Response API., http body : {}", response.getBody());
+        log.info("End API., http status : {}", response.getStatusCodeValue());
+        return response;
+    }
+
+
+    public ResponseEntity<RegisterLineGroupResponse> registerByTaxId(String taxId,RegisterLineGroupRequest request) {
+        String registerEndpoint = GET_REGISTER_BY_TAX_ID_ENDPOINT.replace("{taxId}", taxId);
+        String endpoint = HOST_NAME + registerEndpoint;
+        log.info(
+                "Start client for API. {} request {}",
+                endpoint,
+                request
+        );
+        HttpEntity<RegisterLineGroupRequest> httpEntity = new HttpEntity<>(request);
+        ResponseEntity<RegisterLineGroupResponse> response = restTemplate.exchange(
+                endpoint,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<RegisterLineGroupResponse>() {
+                }
+        );
+        log.info("Response API., http body : {}", response.getBody());
+        log.info("End API., http status : {}", response.getStatusCodeValue());
+        return response;
+    }
 }

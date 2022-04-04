@@ -1,10 +1,7 @@
 package com.cabsat.linebot;
 
 import com.cabsat.linebot.client.LineDataClient;
-import com.cabsat.linebot.client.request.CustomerRequest;
-import com.cabsat.linebot.client.request.OrderRequest;
-import com.cabsat.linebot.client.request.OrderSummaryRequest;
-import com.cabsat.linebot.client.request.UploadRequest;
+import com.cabsat.linebot.client.request.*;
 import com.cabsat.linebot.client.response.*;
 import com.cabsat.linebot.exception.CustomException;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -206,11 +203,14 @@ public class LineBotController {
         String text = content.getText();
         String userId = event.getSource().getUserId();
         String senderId = event.getSource().getSenderId();
-        log.info("Got text message from {} : {} : {} : {}", replyToken, text, userId, senderId);
+        log.info("Got text message from replyToken : {}, text : {}, userId : {}, senderId : {}", replyToken, text, userId, senderId);
+        // test bot = C88b06f13b62e6112531a4b2a027cb886
+        // test bot 02 = C8b81f6fa6c046f48ac65ac2d6b81ca57
         try {
             String message = "";
             boolean isCancel = text.contains("cancel");
             boolean isSummary = text.contains("สรุปยอด");
+            boolean isRegister = text.contains("register");
             if(isSummary){
                 String startDate = "";
                 String endDate = "";
@@ -245,13 +245,48 @@ public class LineBotController {
                 }
             }else if(isCancel){
                 message = deleteOrder(text,userId,senderId);
+            }else if(isRegister){
+                String[] textRegister = text.trim().split("register:");
+                if(textRegister.length > 1){
+                    LineProfileResponse response = null;
+                    try {
+                        response = lineDataClient.getGroupChatSummaryEndpoint(senderId);
+                    }catch (Exception e){
+                        log.error(e.getMessage(), e);
+                        message = "Register fail.";
+                    }
+                    log.info("getGroupChatSummaryEndpoint : {}", response);
+                    if(response != null){
+                        String taxId = textRegister[textRegister.length-1];
+                        RegisterLineGroupRequest request = RegisterLineGroupRequest.builder()
+                                .groupId(response.getGroupId())
+                                .groupName(response.getGroupName())
+                                .pictureUrl(response.getPictureUrl())
+                                .build();
+                        ResponseEntity<RegisterLineGroupResponse> responseResponseEntity = ecommerceClient.registerByTaxId(taxId,request);
+                        if (responseResponseEntity.getStatusCode().is2xxSuccessful()) {
+                            log.info("RegisterLineGroupResponse : {}", responseResponseEntity.getBody());
+                            message = "Register success.";
+                        }else{
+                            message = "Register fail.";
+                        }
+                    }
+                }else{
+                    message = "รูปแบบการ Register ไม่ถูกต้อง\nรูปแบบการ Register\nregister:เลขที่ผู้เสียภาษี\nตัวอย่าง\nregister:1234567890123";
+                }
             }else{
                 message = createOrder(text,userId,senderId);
             }
             this.replyText(replyToken, message);
         }catch (CustomException e){
-            this.replyText(replyToken, "เกิดข้อผิดพลาด" +
-                    "\n"+e.getMessage());
+            if(e.getErrorCode().equalsIgnoreCase("not_register")){
+                String message = "กรุณาทำการ Register!!!\nรูปแบบการ Register\nregister:เลขที่ผู้เสียภาษี\nตัวอย่าง\nregister:1234567890123";
+                this.replyText(replyToken, "เกิดข้อผิดพลาด" +
+                        "\n"+message);
+            }else{
+                this.replyText(replyToken, "เกิดข้อผิดพลาด" +
+                        "\n"+e.getMessage());
+            }
         }catch (Exception e){
             e.printStackTrace();
             this.replyText(replyToken, "เกิดข้อผิดพลาด");
@@ -539,15 +574,16 @@ public class LineBotController {
 
     public String createOrder(String text, String userId, String senderId) throws CustomException {
         String message = "";
-        CustomerRequest customerRequest = createCustomerRequest_v1(text);
+        CustomerRequest customerRequest = createCustomerRequest_v1(text,senderId);
         LineProfileResponse response = null;
         customerRequest.setLineUserId(userId);
+        customerRequest.setGroupId(senderId);
         try {
             response = lineDataClient.getProfileGroupEndpoint(senderId,userId);
         }catch (Exception e){
             log.error(e.getMessage(), e);
         }
-        log.info("LineProfileResponse : {}", response);
+        log.info("getProfileGroupEndpoint : {}", response);
         if(response != null){
             customerRequest.setDisplayName(response.getDisplayName());
             customerRequest.setPictureUrl(response.getPictureUrl());
@@ -598,7 +634,7 @@ public class LineBotController {
         return message;
     }
 
-    public CustomerRequest createCustomerRequest_v1(String text) throws CustomException {
+    public CustomerRequest createCustomerRequest_v1(String text,String groupId) throws CustomException {
         String REGEX = "\n";
         String textError = "";
         List<OrderRequest> orderList = new ArrayList<>();
@@ -614,7 +650,7 @@ public class LineBotController {
                 throw new NullPointerException();
             }
             List<ProductSettingResponse> productSettingList = new ArrayList<>();
-            ResponseEntity<List<ProductSettingResponse>> productSettingResponse = ecommerceClient.getProductSetting();
+            ResponseEntity<List<ProductSettingResponse>> productSettingResponse = ecommerceClient.getProductSetting(groupId);
             if (productSettingResponse.getStatusCode().is2xxSuccessful()) {
                 productSettingList = productSettingResponse.getBody();
             }

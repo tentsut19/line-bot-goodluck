@@ -37,4 +37,6 @@ $ mvn spring-boot:run
 INFO 35569 --- [main] Application   : Started Application in 4.393 seconds (JVM running for 9.056)
 ```
 
+./ngrok http 8080
+
 # Done! 完了

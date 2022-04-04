@@ -225,8 +225,8 @@ class ApplicationTests {
 
 //		emailBodyStr = emailBodyStr.replaceAll("\u200B", "");
 
-		CustomerRequest customerRequest = lineBotController.createCustomerRequest_v1(textError);
-		System.out.println(customerRequest);
+//		CustomerRequest customerRequest = lineBotController.createCustomerRequest_v1(textError,"");
+//		System.out.println(customerRequest);
 	}
 
 	@Test
