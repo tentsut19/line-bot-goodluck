@@ -777,6 +777,7 @@ public class LineBotController {
                             formatProductQuantity = response.getFormatProductQuantity();
                             formatProductColor = response.getFormatProductColor();
                             formatProductSize = response.getFormatProductSize();
+                            break;
                         }
                     }
                 }
