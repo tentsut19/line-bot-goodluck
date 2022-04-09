@@ -772,6 +772,7 @@ public class LineBotController {
                 name = orders[0];
                 for(ProductSettingResponse response:productSettingList){
                     if(response.getName().equalsIgnoreCase(name)){
+                        log.info("response : {}",response);
                         formatProductName = response.getFormatProductName();
                         formatProductQuantity = response.getFormatProductQuantity();
                         formatProductColor = response.getFormatProductColor();
