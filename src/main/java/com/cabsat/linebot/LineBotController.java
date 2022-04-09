@@ -766,13 +766,13 @@ public class LineBotController {
             log.info("orders : {}",orders);
             boolean formatProductName = true;
             boolean formatProductQuantity = true;
-            boolean formatProductColor = true;
-            boolean formatProductSize = true;
+            boolean formatProductColor = false;
+            boolean formatProductSize = false;
             if(!CollectionUtils.isEmpty(productSettingList)){
                 name = orders[0];
                 for(ProductSettingResponse response:productSettingList){
+                    log.info("response.getName() : {} == name : {}",response.getName(),name);
                     if(response.getName().equalsIgnoreCase(name)){
-                        log.info("response : {}",response);
                         formatProductName = response.getFormatProductName();
                         formatProductQuantity = response.getFormatProductQuantity();
                         formatProductColor = response.getFormatProductColor();
