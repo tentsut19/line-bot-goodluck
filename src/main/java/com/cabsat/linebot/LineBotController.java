@@ -763,56 +763,54 @@ public class LineBotController {
         String[] orders = text.trim().split(" ");
         String name = "";
         if(orders.length > 0){
-            for(String order:orders) {
-                boolean formatProductName = true;
-                boolean formatProductQuantity = true;
-                boolean formatProductColor = true;
-                boolean formatProductSize = true;
-                if (!CollectionUtils.isEmpty(productSettingList)) {
-                    name = order;
-                    for (ProductSettingResponse response : productSettingList) {
-                        log.info("response.getName() : {} == name : {}", response.getName(), name);
-                        if (response.getName().equalsIgnoreCase(name)) {
-                            formatProductName = response.getFormatProductName();
-                            formatProductQuantity = response.getFormatProductQuantity();
-                            formatProductColor = response.getFormatProductColor();
-                            formatProductSize = response.getFormatProductSize();
-                            break;
-                        }
+            log.info("orders : {}",orders);
+            boolean formatProductName = true;
+            boolean formatProductQuantity = true;
+            boolean formatProductColor = true;
+            boolean formatProductSize = true;
+            if(!CollectionUtils.isEmpty(productSettingList)){
+                name = orders[0];
+                for(ProductSettingResponse response:productSettingList){
+                    log.info("response.getName() : {} == name : {}",response.getName(),name);
+                    if(response.getName().equalsIgnoreCase(name)){
+                        formatProductName = response.getFormatProductName();
+                        formatProductQuantity = response.getFormatProductQuantity();
+                        formatProductColor = response.getFormatProductColor();
+                        formatProductSize = response.getFormatProductSize();
                     }
                 }
-                log.info("name : {}", name);
-                log.info("formatProductName : " + formatProductName);
-                log.info("formatProductQuantity : " + formatProductQuantity);
-                log.info("formatProductColor : " + formatProductColor);
-                log.info("formatProductSize : " + formatProductSize);
-                String nameFormatProduct = "";
-                int countIndex = 0;
-                if (formatProductName) {
-                    countIndex++;
-                    nameFormatProduct = "ชื่อสินค้า";
-                }
-                if (formatProductQuantity) {
-                    countIndex++;
-                    nameFormatProduct += " จำนวน";
-                }
-                if (formatProductColor) {
-                    countIndex++;
-                    nameFormatProduct += " สี";
-                }
-                if (formatProductSize) {
-                    countIndex++;
-                    nameFormatProduct += " ไซด์";
-                }
-                log.info("orders.length : {}, countIndex : {} ", orders.length, countIndex);
-                // check index
-                if (orders.length > countIndex) {
-                    String errorMessage = "รูปแบบการนำเข้าสินค้าไม่ถูกต้อง\nรายการสินค้า:" + name + "\nตำแหน่งเกินกว่าที่รูปแบบที่กำหนดไว้\nรูปแบบที่ถูกต้อง\n" + nameFormatProduct;
-                    throw new CustomException(INVALID_REQUEST, errorMessage);
-                } else if (orders.length < countIndex) {
-                    String errorMessage = "รูปแบบการนำเข้าสินค้าไม่ถูกต้อง\nรายการสินค้า:" + name + "\nตำแหน่งน้อยกว่าที่รูปแบบที่กำหนดไว้\nรูปแบบที่ถูกต้อง\n" + nameFormatProduct;
-                    throw new CustomException(INVALID_REQUEST, errorMessage);
-                }
+            }
+            log.info("name : {}",name);
+            log.info("formatProductName : "+formatProductName);
+            log.info("formatProductQuantity : "+formatProductQuantity);
+            log.info("formatProductColor : "+formatProductColor);
+            log.info("formatProductSize : "+formatProductSize);
+            String nameFormatProduct = "";
+            int countIndex = 0;
+            if(formatProductName){
+                countIndex++;
+                nameFormatProduct = "ชื่อสินค้า";
+            }
+            if(formatProductQuantity){
+                countIndex++;
+                nameFormatProduct += " จำนวน";
+            }
+            if(formatProductColor){
+                countIndex++;
+                nameFormatProduct += " สี";
+            }
+            if(formatProductSize){
+                countIndex++;
+                nameFormatProduct += " ไซด์";
+            }
+            log.info("orders.length : {}, countIndex : {} ",orders.length,countIndex);
+            // check index
+            if(orders.length > countIndex){
+                String errorMessage = "รูปแบบการนำเข้าสินค้าไม่ถูกต้อง\nรายการสินค้า:"+name+"\nตำแหน่งเกินกว่าที่รูปแบบที่กำหนดไว้\nรูปแบบที่ถูกต้อง\n"+nameFormatProduct;
+                throw new CustomException(INVALID_REQUEST,errorMessage);
+            }else if(orders.length < countIndex){
+                String errorMessage = "รูปแบบการนำเข้าสินค้าไม่ถูกต้อง\nรายการสินค้า:"+name+"\nตำแหน่งน้อยกว่าที่รูปแบบที่กำหนดไว้\nรูปแบบที่ถูกต้อง\n"+nameFormatProduct;
+                throw new CustomException(INVALID_REQUEST,errorMessage);
             }
 
             int i = 0;
