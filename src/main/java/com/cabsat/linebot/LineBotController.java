@@ -763,6 +763,7 @@ public class LineBotController {
         String[] orders = text.trim().split(" ");
         String name = "";
         if(orders.length > 0){
+            log.info("orders : {}",orders);
             boolean formatProductName = true;
             boolean formatProductQuantity = true;
             boolean formatProductColor = true;
@@ -778,6 +779,11 @@ public class LineBotController {
                     }
                 }
             }
+            log.info("name : {}",name);
+            log.info("formatProductName : "+formatProductName);
+            log.info("formatProductQuantity : "+formatProductQuantity);
+            log.info("formatProductColor : "+formatProductColor);
+            log.info("formatProductSize : "+formatProductSize);
             String nameFormatProduct = "";
             int countIndex = 0;
             if(formatProductName){
@@ -796,7 +802,7 @@ public class LineBotController {
                 countIndex++;
                 nameFormatProduct += " ไซด์";
             }
-
+            log.info("orders.length : {}, countIndex : {} ",orders.length,countIndex);
             // check index
             if(orders.length > countIndex){
                 String errorMessage = "รูปแบบการนำเข้าสินค้าไม่ถูกต้อง\nรายการสินค้า:"+name+"\nตำแหน่งเกินกว่าที่รูปแบบที่กำหนดไว้\nรูปแบบที่ถูกต้อง\n"+nameFormatProduct;
