@@ -51,6 +51,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.cabsat.linebot.constant.ResponseConstant.INVALID_REQUEST;
+import static com.cabsat.linebot.constant.ResponseConstant.NOT_FOUND;
 
 @Slf4j
 @LineMessageHandler
@@ -604,6 +605,9 @@ public class LineBotController {
                     int i = 1;
                     for (ProductSettingQuantity productSetting : customerResponse.getData().getProductSettingQuantity()) {
                         productSettingQuantity += "\n" + (i++) + ". สินค้า : " + productSetting.getProductName() + " จำนวน : " + productSetting.getQuantity();
+                        if(!StringUtils.isEmpty(productSetting.getPurchaseRequisitionQuantity())){
+                            productSettingQuantity += "\nเปิดใบสั่งซื้อจำนวน : "+productSetting.getPurchaseRequisitionQuantity();
+                        }
                     }
                 }
 
@@ -678,8 +682,12 @@ public class LineBotController {
             customerRequest.setOrderList(orderList);
 
         }catch (CustomException e){
-            throw new CustomException(INVALID_REQUEST,textError+
-                    "\n====================\nเครื่องหมาย # คือจุดที่มีการขึ้นบรรทัดใหม่ในข้อความ\n====================\n"+e.getMessage());
+            if(e.getErrorCode().equals(NOT_FOUND)){
+                throw new CustomException(NOT_FOUND,e.getMessage());
+            }else{
+                throw new CustomException(INVALID_REQUEST,textError+
+                        "\n====================\nเครื่องหมาย # คือจุดที่มีการขึ้นบรรทัดใหม่ในข้อความ\n====================\n"+e.getMessage());
+            }
         }
         return customerRequest;
     }
@@ -764,6 +772,7 @@ public class LineBotController {
         String name = "";
         if(orders.length > 0){
             log.info("orders : {}",orders);
+            boolean isProduct = false;
             boolean formatProductName = true;
             boolean formatProductQuantity = true;
             boolean formatProductColor = true;
@@ -777,8 +786,13 @@ public class LineBotController {
                         formatProductQuantity = response.getFormatProductQuantity();
                         formatProductColor = response.getFormatProductColor();
                         formatProductSize = response.getFormatProductSize();
+                        isProduct = true;
                     }
                 }
+            }
+            if(!isProduct){
+                String errorMessage = "สินค้า:"+name+"\nไม่มีในระบบ";
+                throw new CustomException(NOT_FOUND,errorMessage);
             }
             log.info("name : {}",name);
             log.info("formatProductName : "+formatProductName);

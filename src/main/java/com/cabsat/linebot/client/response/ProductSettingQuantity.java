@@ -11,4 +11,6 @@ public class ProductSettingQuantity {
     private String productName;
     @JsonProperty("quantity")
     private String quantity;
+    @JsonProperty("purchase_requisition_quantity")
+    private String purchaseRequisitionQuantity;
 }
